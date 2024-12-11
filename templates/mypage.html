@@ -197,7 +197,7 @@ ul {
         fetchUserInfo()
         async function fetchUserInfo() {
             try {
-                const response = await fetch('http://127.0.0.1:5000/mypage', {
+                const response = await fetch('${config.API_URL}/mypage', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email: sessionStorage.getItem('email') }),
@@ -217,7 +217,7 @@ ul {
         fetchRecommendations()
         async function fetchRecommendations() {
             try {
-                const response = await fetch('http://127.0.0.1:5000/mypage', {
+                const response = await fetch('${config.API_URL}/mypage', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email: sessionStorage.getItem('email') }),
