@@ -1,4 +1,3 @@
-{% include 'include/header.html' %}
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -13,7 +12,6 @@
             padding: 0;
         }
 
-        /* 배너 스타일 */
         .banner {
             display: flex;
             justify-content: space-between;
@@ -56,19 +54,18 @@
             background-color: #343a40;
         }
 
-        /* 메인 콘텐츠 스타일 */
         main {
+            margin-top: 80px;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            padding-top: 80px;
+            min-height: calc(100vh - 80px);
         }
 
         .container {
             text-align: center;
-            background-color: #ffffff;
             padding: 40px;
+            background-color: #ffffff;
             border-radius: 12px;
             box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
             max-width: 600px;
@@ -86,19 +83,8 @@
             margin-bottom: 40px;
         }
 
-        .container button {
-            padding: 15px 30px;
-            font-size: 18px;
-            border: none;
-            border-radius: 6px;
-            background-color: #212529;
-            color: #ffffff;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .container button:hover {
-            background-color: #343a40;
+        .container .banner-button {
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -106,22 +92,13 @@
     <!-- 배너 -->
     <header>
         <div class="banner">
-    <div class="banner-left">
-        <a href="{{ url_for('user_page.main') }}">
-        <img src="{{ url_for('static', filename='images/logo.png') }}" 
-             alt="DreamMelody Logo" 
-             class="banner-logo">
-        </a>
-
-    </div>
-            <div class="banner-right">
-                {% if session['email'] %}
-                    <a style="font-weight: bold;">{{ session['email'] }}님, 반갑습니다. &nbsp;&nbsp;</a>
-                    <a href="{{ url_for('mypage.mypage') }}" class="banner-button">마이페이지</a>
-                    <a href="{{ url_for('user_page.logout') }}" class="banner-button">로그아웃</a>
-                {% else %}
-                    <a href="{{ url_for('user_page.user_login_service') }}" class="banner-button">로그인</a>
-                {% endif %}
+            <div class="banner-left">
+                <a href="main.html">
+                    <img src="../static/images/logo.png" alt="DreamMelody Logo" class="banner-logo">
+                </a>
+            </div>
+            <div class="banner-right" id="loginArea">
+                <!-- 로그인 상태에 따라 동적으로 렌더링 -->
             </div>
         </div>
     </header>
@@ -131,13 +108,40 @@
         <div class="container">
             <h1>꿈 음악 분석 서비스</h1>
             <p>당신의 꿈을 음악으로 해석해드립니다</p>
-            {% if session['email'] %}
-                <a href="{{ url_for('user_page.index') }}" class="banner-button">시작</a>
-            {% else %}
-                <a href="{{ url_for('user_page.user_login_service') }}" class="banner-button">로그인</a>
-            {% endif %}    
+            <div id="mainAction">
+                <!-- 로그인 상태에 따라 동적으로 버튼 표시 -->
+            </div>
         </div>
     </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mainAction = document.getElementById('mainAction');
+            const loginArea = document.getElementById('loginArea');
+            const userEmail = sessionStorage.getItem('email');
+
+            if (userEmail) {
+                // 로그인 상태일 때
+                loginArea.innerHTML = `
+                    <a style="font-weight: bold;">${userEmail}님, 반갑습니다.</a>
+                    <a href="mypage.html" class="banner-button">마이페이지</a>
+                    <a href="logout.html" class="banner-button">로그아웃</a>
+                `;
+
+                mainAction.innerHTML = `
+                    <a href="index.html" class="banner-button">시작</a>
+                `;
+            } else {
+                // 비로그인 상태일 때
+                loginArea.innerHTML = `
+                    <a href="login.html" class="banner-button">로그인</a>
+                `;
+
+                mainAction.innerHTML = `
+                    <a href="login.html" class="banner-button">로그인</a>
+                `;
+            }
+        });
+    </script>
 </body>
 </html>
-{% include 'include/footer.html' %}
