@@ -1,3 +1,3 @@
 const config = {
-    API_URL: 'http://dreammelody.shop/api/'
+    API_URL: 'https://dreammelody.shop/api/'
   };
