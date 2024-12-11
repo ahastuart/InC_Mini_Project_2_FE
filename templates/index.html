@@ -4,6 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
         <title>폼 구현</title>
         <style>
             body {
@@ -146,6 +147,7 @@
         </div>
 
         <!-- JavaScript -->
+        <script src="../config.js"></script>
         <script>
         
             document.getElementById('userIdInput').value = sessionStorage.getItem('user_id');
@@ -163,7 +165,7 @@
             formData.append('dream_content', document.getElementById('dreamTextarea').value);
 
             try {
-                const response = await fetch('http://127.0.0.1:5000/dream', {
+                const response = await fetch(`${config.API_URL}/dream`, {
                     method: 'POST',
                     body: formData
                 });
