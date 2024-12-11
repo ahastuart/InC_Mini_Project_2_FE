@@ -194,7 +194,7 @@
         loginArea.innerHTML = `
             <a style="font-weight: bold;">${userEmail}님, 반갑습니다. &nbsp;&nbsp;</a>
             <a href="mypage.html" class="banner-button">마이페이지</a>
-            <a href="logout.html" class="banner-button">로그아웃</a>
+            <a href="javascript:void(0)" onclick="logout()" class="banner-button">로그아웃</a>
         `;
     } else {
         loginArea.innerHTML = `
@@ -202,6 +202,11 @@
         `;
     }
 });
+
+function logout() {
+    sessionStorage.clear();
+    window.location.href = 'main.html';
+}
         </script>
     </body>
 </main>
