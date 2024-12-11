@@ -1,106 +1,119 @@
-{% include 'include/header.html' %}
-<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f8f9fa;
-        margin: 0;
-        padding: 0;
-    }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Page</title>
+    <style>
+/* CSS 초기화 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .banner {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        height: 60px; /* 배너 높이 통일 */
-        padding: 0 20px; /* 좌우 여백 통일 */
-        background-color: #212529;
-        color: #ffffff;
-        font-size: 18px;
-        font-weight: bold;
-        position: fixed;
-        top: 0;
-        width: 100%;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-    }
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* 수평 스크롤 방지 */
+            width: 100%; /* 전체 화면 너비에 맞추기 */
+        }
 
-    .banner-left {
-        text-align: left;
-    }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
 
-    .banner-right {
-        display: flex;
-        gap: 10px;
-    }
+        /* 배너 스타일 */
+        .banner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+            padding: 0 20px;
+            background-color: #212529;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: bold;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            max-width: 100vw; /* 최대 너비를 화면 너비로 제한 */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            overflow: hidden; /* 초과 내용 숨기기 */
+        }
 
-    .banner-button {
-        padding: 8px 16px;
-        border: none;
-        border-radius: 4px;
-        font-size: 14px;
-        cursor: pointer;
-        color: #ffffff;
-        background-color: #495057;
-        transition: background-color 0.3s ease;
-        text-decoration: none;
-    }
+        .banner-left {
+            text-align: left;
+        }
 
-    .banner-button:hover {
-        background-color: #343a40;
-    }
+        .banner-right {
+            display: flex;
+            gap: 10px;
+        }
 
-    main {
-        margin-top: 80px; /* 배너 높이 + 여백 설정 */
-        text-align: center;
-        padding: 30px;
-    }
+        .banner-button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            color: #ffffff;
+            background-color: #495057;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+        }
 
-    .form-container {
-        width: 600px;
-        margin: 0 auto;
-        padding: 40px;
-        background-color: #ffffff;
-        border: 1px solid #ddd;
-        border-radius: 12px;
-        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
-    }
+        .banner-button:hover {
+            background-color: #343a40;
+        }
 
-    .form-container textarea {
-        width: 100%;
-        height: 300px;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        resize: none;
-        font-size: 18px;
-    }
+        /* 컨텐츠 스타일 */
+        .content-container {
+            width: 80%;
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 100px;
+        }
 
-    .form-container button {
-        width: 48%;
-        padding: 15px;
-        font-size: 18px;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-    }
+        h1 {
+            text-align: center;
+        }
 
-    .form-container button.cancel {
-        background-color: #f8f9fa;
-        color: #000;
-        border: 1px solid #ddd;
-    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
 
-    .form-container button.submit {
-        background-color: #212529;
-        color: #ffffff;
-    }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
 
-    .form-container button + button {
-        margin-left: 4%;
-    }
-</style>
+        th {
+            background-color: #f4f4f4;
+        }
 
+        .message {
+            text-align: center;
+            color: #6c757d;
+        }
+
+ul {
+    list-style-type: circle;
+    margin-left: 20px;
+}
+
+    </style>
+</head>
 <body>
     <header>
         <div class="banner">
@@ -109,59 +122,63 @@
                     <img src="../static/images/logo.png" alt="DreamMelody Logo" class="banner-logo">
                 </a>
             </div>
-            <div class="banner-right" id="loginArea"></div>
+            <div class="banner-right" id="loginArea">
+                <!-- 로그인 상태에 따라 동적으로 렌더링 -->
+            </div>
         </div>
     </header>
 
-    <main>
-        <div class="form-container">
-            <form id="dreamForm">
-                <input type="hidden" name="user_id" id="userIdInput">
-                <textarea name="dream_content" id="dreamTextarea" placeholder="여기에 꿈 내용을 작성해주세요..." required></textarea>
-                <div style="margin-top: 20px; display: flex; justify-content: space-between;">
-                    <button type="button" class="cancel" onclick="clearTextarea()">취소</button>
-                    <button type="submit" class="submit">제출</button>
-                </div>
-            </form>
+    <div class="content-container">
+        <h1>사용자 정보</h1>
+        <div id="user-info">
+            <!-- 사용자 정보가 동적으로 렌더링됩니다 -->
         </div>
-    </main>
+    </div>
+
+    <div class="content-container">
+        <h1>노래 검색 정보</h1>
+        <div id="recommendations">
+            <!-- 추천 정보가 동적으로 렌더링됩니다 -->
+        </div>
+    </div>
 
     <script src="/config.js"></script>
     <script>
-        document.getElementById('userIdInput').value = sessionStorage.getItem('user_id');
+        // console.log(sessionStorage.getItem('user_id'))
+        // document.getElementById('userIdInput').value = sessionStorage.getItem('user_id');
 
-        function clearTextarea() {
-            document.getElementById('dreamTextarea').value = '';
-        }
+        // function clearTextarea() {
+        //     document.getElementById('dreamTextarea').value = '';
+        // }
 
-        document.getElementById('dreamForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
+        // document.getElementById('dreamForm').addEventListener('submit', async function(e) {
+        //     e.preventDefault();
 
-            const formData = new FormData();
-            formData.append('user_id', sessionStorage.getItem('user_id'));
-            formData.append('dream_content', document.getElementById('dreamTextarea').value);
+        //     const formData = new FormData();
+        //     formData.append('user_id', sessionStorage.getItem('user_id'));
+        //     formData.append('dream_content', document.getElementById('dreamTextarea').value);
 
-            try {
-                const response = await fetch(`${config.API_URL}/dream`, {
-                    method: 'POST',
-                    body: formData
-                });
+        //     try {
+        //         const response = await fetch(`${config.API_URL}/dream`, {
+        //             method: 'POST',
+        //             body: formData
+        //         });
 
-                const data = await response.json();
+        //         const data = await response.json();
 
-                if (!data.success) {
-                    alert(data.message);
-                    return;
-                }
+        //         if (!data.success) {
+        //             alert(data.message);
+        //             return;
+        //         }
 
-                window.location.href = `result.html?data=${encodeURIComponent(JSON.stringify(data))}`;
-            } catch (error) {
-                alert('서버 통신 중 오류가 발생했습니다.');
-                console.error('Error:', error);
-            }
-        });
+        //         window.location.href = `result.html?data=${encodeURIComponent(JSON.stringify(data))}`;
+        //     } catch (error) {
+        //         alert('서버 통신 중 오류가 발생했습니다.');
+        //         console.error('Error:', error);
+        //     }
+        // });
 
-        document.addEventListener('DOMContentLoaded', function() {
+        function checkLoginStatus() {
             const loginArea = document.getElementById('loginArea');
             const userEmail = sessionStorage.getItem('email');
 
@@ -169,15 +186,129 @@
                 loginArea.innerHTML = `
                     <a style="font-weight: bold;">${userEmail}님, 반갑습니다.</a>
                     <a href="mypage.html" class="banner-button">마이페이지</a>
-                    <a href="logout.html" class="banner-button">로그아웃</a>
+                    <a href="javascript:void(0)" onclick="logout()" class="banner-button">로그아웃</a>
                 `;
             } else {
                 loginArea.innerHTML = `
                     <a href="login.html" class="banner-button">로그인</a>
                 `;
             }
+        }
+        fetchUserInfo()
+        async function fetchUserInfo() {
+            try {
+                const response = await fetch('http://127.0.0.1:5000/mypage', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: sessionStorage.getItem('email') }),
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    renderUserInfo(data.user_data);
+                } else {
+                    displayError('user-info', '사용자 정보를 가져올 수 없습니다.');
+                }
+            } catch (error) {
+                console.error('API 요청 실패:', error);
+                displayError('user-info', '오류가 발생했습니다. 다시 시도해주세요.');
+            }
+        }
+        fetchRecommendations()
+        async function fetchRecommendations() {
+            try {
+                const response = await fetch('http://127.0.0.1:5000/mypage', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: sessionStorage.getItem('email') }),
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    renderRecommendations(data.recommendations);
+                } else {
+                    displayError('recommendations', '추천 정보를 가져올 수 없습니다.');
+                }
+            } catch (error) {
+                console.error('API 요청 실패:', error);
+                displayError('recommendations', '오류가 발생했습니다. 다시 시도해주세요.');
+            }
+        }
+
+        function renderUserInfo(userData) {
+            const userInfoElement = document.getElementById('user-info');
+
+            if (!userData) {
+                displayError('user-info', '사용자 정보를 찾을 수 없습니다.');
+                return;
+            }
+
+            userInfoElement.innerHTML = `
+                <table>
+                    <tr><th>ID</th><td>${userData.id}</td></tr>
+                    <tr><th>이메일</th><td>${userData.email}</td></tr>
+                    <tr><th>이름</th><td>${userData.username}</td></tr>
+                    <tr><th>가입 날짜</th><td>${userData.created_date}</td></tr>
+                </table>
+            `;
+        }
+
+        function renderRecommendations(recommendations) {
+            const recommendationsElement = document.getElementById('recommendations');
+
+            if (!recommendations || Object.keys(recommendations).length === 0) {
+                displayError('recommendations', '추천 정보를 찾을 수 없습니다.');
+                return;
+            }
+
+            recommendationsElement.innerHTML = Object.entries(recommendations)
+                .map(([dream, songs]) => `
+                    <div style="margin-bottom: 20px;">
+                        <h3>${dream}</h3>
+                        <ul>${songs.map(song => `<li>${song}</li>`).join('')}</ul>
+                    </div>
+                `).join('');
+        }
+
+        function displayError(elementId, message) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<p class="message">${message}</p>`;
+        }
+
+
+        
+        document.addEventListener('DOMContentLoaded', function () {
+            const mainAction = document.getElementById('mainAction');
+            const loginArea = document.getElementById('loginArea');
+            const userEmail = sessionStorage.getItem('email');
+
+            if (userEmail) {
+                // 로그인 상태일 때
+                loginArea.innerHTML = `
+                    <a style="font-weight: bold;">${userEmail}님, 반갑습니다.</a>
+                    <a href="mypage.html" class="banner-button">마이페이지</a>
+                    <a href="javascript:void(0)" onclick="logout()" class="banner-button">로그아웃</a>
+                `;
+
+                mainAction.innerHTML = `
+                    <a href="index.html" class="banner-button">시작</a>
+                `;
+            } else {
+                // 비로그인 상태일 때
+                loginArea.innerHTML = `
+                    <a href="login.html" class="banner-button">로그인</a>
+                `;
+
+                mainAction.innerHTML = `
+                    <a href="login.html" class="banner-button">로그인</a>
+                `;
+            }
         });
+        
+        function logout() {
+    sessionStorage.clear();
+    window.location.href = 'main.html';
+}
     </script>
 </body>
-
-{% include 'include/footer.html' %}
+</html>
