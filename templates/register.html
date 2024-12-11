@@ -7,7 +7,7 @@
        <meta name="description" content="" />
        <meta name="author" content="" />
        <title>Register - SB Admin</title>
-       <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
+       <link href="../static/css/styles.css" rel="stylesheet" />
        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
        <style>
            body {
@@ -78,33 +78,31 @@
                <h3 class="text-center font-weight-light my-4">회원가입</h3>
            </div>
            <div class="card-body">
-               <form method="POST">
-                   <div class="form-floating mb-3">
-                       <input class="form-control" id="inputID" type="text" placeholder="ID" name="id" />
-                       <label for="inputID">이메일</label>
-                   </div>
-                   <div class="form-floating mb-3">
-                       <input class="form-control" id="inputPassword" type="password" placeholder="Create a password" name="pw" />
-                       <label for="inputPassword">비밀번호</label>
-                       <div id="passwordMessage" class="message">
-                           비밀번호는 8~16자이며, 대문자, 소문자, 숫자, 특수문자를 포함해야 합니다.
-                       </div>
-                   </div>
-                   <div class="form-floating mb-3">
-                       <input class="form-control" id="inputPasswordConfirm" type="password" placeholder="Confirm password" name="pwcon" />
-                       <label for="inputPasswordConfirm">비밀번호 확인</label>
-                   </div>
-                   <div class="form-floating mb-3">
-                    <input class="form-control" id="inputName" type="text" placeholder="Name" name="name" />
-                    <label for="inputName">이름</label>
+                <div class="form-floating mb-3">
+                    <input class="form-control" id="inputID" type="text" placeholder="ID" name="id" />
+                    <label for="inputID">이메일</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input class="form-control" id="inputPassword" type="password" placeholder="Create a password" name="pw" />
+                    <label for="inputPassword">비밀번호</label>
+                    <div id="passwordMessage" class="message">
+                        비밀번호는 8~16자이며, 대문자, 소문자, 숫자, 특수문자를 포함해야 합니다.
                     </div>
-                   <div class="mt-4 mb-0">
-                       <button class="btn btn-primary btn-block">가입하기</button>
-                   </div>
-               </form>
+                </div>
+                <div class="form-floating mb-3">
+                    <input class="form-control" id="inputPasswordConfirm" type="password" placeholder="Confirm password" name="pwcon" />
+                    <label for="inputPasswordConfirm">비밀번호 확인</label>
+                </div>
+                <div class="form-floating mb-3">
+                <input class="form-control" id="inputName" type="text" placeholder="Name" name="name" />
+                <label for="inputName">이름</label>
+                </div>
+                <div class="mt-4 mb-0">
+                    <button type = "button" id = "registerBtn" class = "btn btn-primary btn-block">가입하기</button>
+                </div>
            </div>
            <div class="card-footer text-center py-3">
-               <a href="{{ url_for('user_page.user_login_service') }}" class="btn-transparent">로그인하기</a>
+               <a href="login.html" class="btn-transparent">로그인하기</a>
            </div>
        </div>
        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
@@ -121,6 +119,57 @@
            passwordInput.addEventListener('blur', () => {
                passwordMessage.classList.remove('active');
            });
+
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id');
+        const name = urlParams.get('name');
+        const pw = urlParams.get('pw');
+        const pwcon = urlParams.get('pwcon');
+
+        // 값이 있다면 input 필드에 설정
+        if (id) document.getElementById('inputID').value = id;
+        if (name) document.getElementById('inputName').value = name;
+        if (pw) document.getElementById('inputPassword').value = pw;
+        if (pwcon) document.getElementById('inputPasswordConfirm').value = pwcon;
+
+        document.getElementById('registerBtn').addEventListener('click', async () => {
+            const registerData = {
+                id: document.getElementById('inputID').value,
+                name : document.getElementById('inputName').value,
+                pw: document.getElementById('inputPassword').value,
+                pwcon: document.getElementById('inputPasswordConfirm').value
+            };
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(registerData)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                if (!data.success) {
+                    alert(data.message || '회원가입에 실패했습니다.');
+                    return;
+                }
+                
+                // 메인 페이지로 이동
+                alert(data.message || '회원가입에 성공했습니다.');
+                window.location.href = 'login.html';
+
+            } catch (error) {
+                alert('서버 통신 중 오류가 발생했습니다.');
+                console.error('Error:', error);
+            }
+        });
        </script>
    </body>
 </html>
