@@ -144,38 +144,39 @@ ul {
 
     <script src="/config.js"></script>
     <script>
-        document.getElementById('userIdInput').value = sessionStorage.getItem('user_id');
+        // console.log(sessionStorage.getItem('user_id'))
+        // document.getElementById('userIdInput').value = sessionStorage.getItem('user_id');
 
-        function clearTextarea() {
-            document.getElementById('dreamTextarea').value = '';
-        }
+        // function clearTextarea() {
+        //     document.getElementById('dreamTextarea').value = '';
+        // }
 
-        document.getElementById('dreamForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
+        // document.getElementById('dreamForm').addEventListener('submit', async function(e) {
+        //     e.preventDefault();
 
-            const formData = new FormData();
-            formData.append('user_id', sessionStorage.getItem('user_id'));
-            formData.append('dream_content', document.getElementById('dreamTextarea').value);
+        //     const formData = new FormData();
+        //     formData.append('user_id', sessionStorage.getItem('user_id'));
+        //     formData.append('dream_content', document.getElementById('dreamTextarea').value);
 
-            try {
-                const response = await fetch(`${config.API_URL}/dream`, {
-                    method: 'POST',
-                    body: formData
-                });
+        //     try {
+        //         const response = await fetch(`${config.API_URL}/dream`, {
+        //             method: 'POST',
+        //             body: formData
+        //         });
 
-                const data = await response.json();
+        //         const data = await response.json();
 
-                if (!data.success) {
-                    alert(data.message);
-                    return;
-                }
+        //         if (!data.success) {
+        //             alert(data.message);
+        //             return;
+        //         }
 
-                window.location.href = `result.html?data=${encodeURIComponent(JSON.stringify(data))}`;
-            } catch (error) {
-                alert('서버 통신 중 오류가 발생했습니다.');
-                console.error('Error:', error);
-            }
-        });
+        //         window.location.href = `result.html?data=${encodeURIComponent(JSON.stringify(data))}`;
+        //     } catch (error) {
+        //         alert('서버 통신 중 오류가 발생했습니다.');
+        //         console.error('Error:', error);
+        //     }
+        // });
 
         function checkLoginStatus() {
             const loginArea = document.getElementById('loginArea');
@@ -193,7 +194,7 @@ ul {
                 `;
             }
         }
-
+        fetchUserInfo()
         async function fetchUserInfo() {
             try {
                 const response = await fetch('http://127.0.0.1:5000/mypage', {
@@ -213,7 +214,7 @@ ul {
                 displayError('user-info', '오류가 발생했습니다. 다시 시도해주세요.');
             }
         }
-
+        fetchRecommendations()
         async function fetchRecommendations() {
             try {
                 const response = await fetch('http://127.0.0.1:5000/mypage', {
@@ -273,6 +274,41 @@ ul {
             const element = document.getElementById(elementId);
             element.innerHTML = `<p class="message">${message}</p>`;
         }
+
+
+        
+        document.addEventListener('DOMContentLoaded', function () {
+            const mainAction = document.getElementById('mainAction');
+            const loginArea = document.getElementById('loginArea');
+            const userEmail = sessionStorage.getItem('email');
+
+            if (userEmail) {
+                // 로그인 상태일 때
+                loginArea.innerHTML = `
+                    <a style="font-weight: bold;">${userEmail}님, 반갑습니다.</a>
+                    <a href="mypage.html" class="banner-button">마이페이지</a>
+                    <a href="javascript:void(0)" onclick="logout()" class="banner-button">로그아웃</a>
+                `;
+
+                mainAction.innerHTML = `
+                    <a href="index.html" class="banner-button">시작</a>
+                `;
+            } else {
+                // 비로그인 상태일 때
+                loginArea.innerHTML = `
+                    <a href="login.html" class="banner-button">로그인</a>
+                `;
+
+                mainAction.innerHTML = `
+                    <a href="login.html" class="banner-button">로그인</a>
+                `;
+            }
+        });
+        
+        function logout() {
+    sessionStorage.clear();
+    window.location.href = 'main.html';
+}
     </script>
 </body>
 </html>
